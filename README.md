@@ -25,7 +25,7 @@ This runs Prettier, ESLint, TypeScript, tests, and the production build. Husky r
 
 ## Data and backend integration
 
-V1 uses sample data and browser storage. Authentication, backend endpoints, email delivery, and server validation are not implemented. Headline metrics and earnings use design fixtures. The timer survives navigation and resets on reload.
+V1 uses sample data and browser storage. Authentication, backend endpoints, email delivery, and server validation are not implemented. Headline metrics and earnings use design fixtures. The timer remembers its project and start time across refreshes and closed tabs when browser storage is available. New projects do not change the selected project. A first session requires an explicit project selection.
 
 `WorkspaceSource` defines async `load`, `create`, and `saveTime` methods. The local implementation is in `src/lib/workspace-source.ts`; the screens access it through `useWorkspace`. Replace the exported source with an API implementation when the backend contract is available. Forms await successful saves, prevent repeat submissions while saving, and keep input when a request fails. Loading failures have a Retry action; failed time saves retain the duration for retry.
 

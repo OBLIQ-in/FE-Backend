@@ -49,8 +49,6 @@ export default function DashboardApp({ children }: { children: ReactNode }) {
   const timer = useTimer();
   const { running, seconds } = timer;
   const [savingTime, setSavingTime] = useState(false);
-  const [timerProject, setTimerProject] = useState(projects[0]?.id || "");
-  const activeTimerProject = timerProject || projects[0]?.id || "";
   const [period, setPeriod] = useState("Month");
   const [query, setQuery] = useState("");
   const [searchOpen, setSearchOpen] = useState(false);
@@ -89,14 +87,13 @@ export default function DashboardApp({ children }: { children: ReactNode }) {
     setToast("Saved");
   }
   async function toggleTimer() {
-    if (savingTime) return;
-    if (running || seconds > 0) {
-      const duration = running ? timer.stop() : seconds;
-      if (duration > 0) {
-        const project = projects.find((item) => item.id === activeTimerProject);
+    if (savingTime || !ready || !timer.ready) return;
+    if (timer.hasSession) {
+      const session = timer.stop();
+      if (session && session.seconds > 0) {
         setSavingTime(true);
         try {
-          await workspace.saveTime(project?.name || "Unassigned", duration);
+          await workspace.saveTime(session.project.name, session.seconds);
           timer.reset();
           setToast("Time session saved");
         } catch {
@@ -104,8 +101,21 @@ export default function DashboardApp({ children }: { children: ReactNode }) {
         } finally {
           setSavingTime(false);
         }
+      } else timer.reset();
+    } else {
+      const project = projects.find((item) => item.id === timer.project?.id);
+      if (!project) {
+        navigate("time-tracking");
+        setToast("Select a project before starting the timer");
+        return;
       }
-    } else timer.start();
+      timer.start(project);
+    }
+  }
+
+  function selectTimerProject(id: string) {
+    const project = projects.find((item) => item.id === id);
+    if (project) timer.selectProject(project);
   }
   if (!currentPage || !route) return children;
   return (
@@ -210,11 +220,11 @@ export default function DashboardApp({ children }: { children: ReactNode }) {
               aria-label={
                 running
                   ? "Stop timer"
-                  : seconds > 0
+                  : timer.hasSession
                     ? "Retry saving timer"
                     : "Start timer"
               }
-              disabled={savingTime || !ready}
+              disabled={savingTime || !ready || !timer.ready}
               onClick={toggleTimer}
             >
               {running ? (
@@ -226,6 +236,12 @@ export default function DashboardApp({ children }: { children: ReactNode }) {
           </div>
         </header>
         {workspace.loading && <p role="status">Loading workspace...</p>}
+        {timer.storageError && (
+          <p role="alert">
+            Browser storage is unavailable. Keep this page open to avoid losing
+            the timer.
+          </p>
+        )}
         {workspace.error && (
           <div role="alert">
             <p>{workspace.error}</p>
@@ -262,11 +278,12 @@ export default function DashboardApp({ children }: { children: ReactNode }) {
             seconds={seconds}
             running={running}
             saving={savingTime}
+            hasSession={timer.hasSession}
             toggleTimer={toggleTimer}
             entries={entries}
             projects={projects}
-            timerProject={activeTimerProject}
-            setTimerProject={setTimerProject}
+            timerProject={timer.project}
+            setTimerProject={selectTimerProject}
           />
         )}
         {ready && route === "invoices" && (
