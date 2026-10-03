@@ -1,13 +1,14 @@
-import type { Dispatch, SetStateAction } from "react";
 import { Play, Square } from "lucide-react";
 import { PageHeading, SectionHeader } from "@/components/dashboard/ui";
 import { formatDate, formatTime } from "@/lib/format";
 import type { Project, TimeEntry } from "@/types/workspace";
+import type { TimerProject } from "@/lib/timer-state";
 
 export function TimePage({
   seconds,
   running,
   saving,
+  hasSession,
   toggleTimer,
   entries,
   projects,
@@ -17,11 +18,12 @@ export function TimePage({
   seconds: number;
   running: boolean;
   saving: boolean;
+  hasSession: boolean;
   toggleTimer: () => void;
   entries: TimeEntry[];
   projects: Project[];
-  timerProject: string;
-  setTimerProject: Dispatch<SetStateAction<string>>;
+  timerProject: TimerProject | null;
+  setTimerProject: (id: string) => void;
 }) {
   return (
     <>
@@ -33,10 +35,17 @@ export function TimePage({
           <label>
             Project
             <select
-              disabled={running || seconds > 0 || saving}
-              value={timerProject}
+              disabled={hasSession || saving}
+              value={timerProject?.id || ""}
               onChange={(event) => setTimerProject(event.target.value)}
             >
+              <option value="">Select a project</option>
+              {timerProject &&
+                !projects.some((item) => item.id === timerProject.id) && (
+                  <option value={timerProject.id} disabled>
+                    {timerProject.name} (unavailable)
+                  </option>
+                )}
               {projects.map((item) => (
                 <option key={item.id} value={item.id}>
                   {item.name}
@@ -47,7 +56,11 @@ export function TimePage({
           <button
             className="primary-button"
             onClick={toggleTimer}
-            disabled={saving}
+            disabled={
+              saving ||
+              (!hasSession &&
+                !projects.some((item) => item.id === timerProject?.id))
+            }
           >
             {running ? (
               <Square size={15} fill="currentColor" />
@@ -58,7 +71,7 @@ export function TimePage({
               ? "Saving..."
               : running
                 ? "Stop and save session"
-                : seconds > 0
+                : hasSession
                   ? "Retry saving session"
                   : "Start timer"}
           </button>

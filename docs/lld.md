@@ -31,7 +31,8 @@ src/
     storage-validation.ts  Runtime checks for stored record fields
     workspace-source.ts    Async data source and local browser implementation
     use-workspace.ts        Workspace state, loading, and request results
-    use-timer.ts            Elapsed-time calculation
+    timer-state.ts          Timer snapshot validation, persistence, and duration
+    use-timer.ts            Selected project and running or stopped session
     use-dialog.ts           Focus trap, Escape, and focus restoration
   styles/                   Base, shell, home, shared UI, pages, dialogs, breakpoints
 tests/
@@ -45,7 +46,9 @@ The root layout keeps the dashboard mounted across routes. Route pages validate 
 
 `useWorkspace` loads records through `WorkspaceSource`. The local implementation reads each browser collection only after its record validator passes. Invalid storage falls back to the design fixtures. Writes update memory before storage, so the preview still works when the browser denies storage access.
 
-Screens receive records and callbacks through props. Forms collect input, then await `useWorkspace.create`. The source owns persistence and returns the updated workspace. `DashboardApp` closes the form and navigates after success. Failed submissions retain the form and show an error. The timer uses elapsed monotonic time; failed saves keep the stopped duration for retry.
+Screens receive records and callbacks through props. Forms collect input, then await `useWorkspace.create`. The source owns persistence and returns the updated workspace. `DashboardApp` closes the form and navigates after success. Failed submissions retain the form and show an error.
+
+The timer stores its selected project and session in `obliq-preview-timer-v1`. A session captures the project's ID and name when started, plus a Unix timestamp in milliseconds. Elapsed time is calculated from that timestamp, including time while the page was closed. Selection stays fixed until the session is saved. A stopped session stores its stop time before the save request, so a failed save can be retried after reload. Successful saves clear only the session and retain the project for next time. Invalid timer storage falls back to an empty selection; unavailable storage shows a warning.
 
 ## Adding a screen
 
