@@ -6,7 +6,7 @@ import {
   readTimer,
   startSession,
   writeTimer,
-} from "../src/lib/timer-state.ts";
+} from "../../src/lib/timer-state.ts";
 
 const project = { id: "PRJ-1", name: "Audit" };
 const startedAt = 1_790_000_000_000;
