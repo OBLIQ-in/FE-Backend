@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { createLocalWorkspace } from "../src/lib/workspace-source.ts";
+import { createLocalWorkspace } from "../../src/lib/workspace-source.ts";
 
 const values = {
   title: "Audit",

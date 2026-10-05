@@ -7,7 +7,7 @@ import {
   validDocuments,
   validActivity,
   validTimeEntries,
-} from "../src/lib/storage-validation.ts";
+} from "../../src/lib/storage-validation.ts";
 
 test("rejects storage that is not a record array", () => {
   for (const validate of [
