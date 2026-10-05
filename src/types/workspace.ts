@@ -88,3 +88,31 @@ export type WorkspaceSource = {
   create: (kind: ModalKind, values: FormValues) => Promise<WorkspaceData>;
   saveTime: (project: string, seconds: number) => Promise<WorkspaceData>;
 };
+
+export type UserType = "client" | "firm";
+export type MemberRole = "owner" | "article_assistant";
+
+export type User = {
+  id: string;
+  authId: string;
+  email: string;
+  name: string;
+  type: UserType | null;
+  onboardedAt: string | null;
+  createdAt: string;
+};
+
+export type Firm = {
+  id: string;
+  name: string;
+  createdBy: string;
+  contactEmail?: string;
+  location?: string;
+  createdAt: string;
+};
+
+export type FirmOnboardingValues = {
+  firmName: string;
+  contactEmail?: string;
+  location?: string;
+};

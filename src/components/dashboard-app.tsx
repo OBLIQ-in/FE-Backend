@@ -32,6 +32,7 @@ import { ProjectsPage } from "@/components/dashboard/pages/projects";
 import { TimePage } from "@/components/dashboard/pages/time";
 import { ProjectDrawer } from "@/components/dashboard/project-drawer";
 import { WorkspaceModal } from "@/components/dashboard/workspace-modal";
+import { useOnboarding } from "@/lib/use-onboarding";
 import type { FormValues, ModalKind, Project } from "@/types/workspace";
 
 export default function DashboardApp({ children }: { children: ReactNode }) {
@@ -48,6 +49,7 @@ export default function DashboardApp({ children }: { children: ReactNode }) {
   const ready = !workspace.loading && !workspace.error;
   const timer = useTimer();
   const { running, seconds } = timer;
+  const { user, firm } = useOnboarding();
   const [savingTime, setSavingTime] = useState(false);
   const [period, setPeriod] = useState("Month");
   const [query, setQuery] = useState("");
@@ -55,6 +57,7 @@ export default function DashboardApp({ children }: { children: ReactNode }) {
   const [modal, setModal] = useState<ModalKind | null>(null);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [toast, setToast] = useState("");
+
   useEffect(() => {
     if (!toast) return;
     const timer = window.setTimeout(() => setToast(""), 3000);
@@ -129,6 +132,7 @@ export default function DashboardApp({ children }: { children: ReactNode }) {
         mobileOpen={mobileOpen}
         closeMobile={() => setMobileOpen(false)}
         toggleCollapse={() => setCollapsed((value) => !value)}
+        firmName={firm?.name}
       />
       <main id="main-content" className="main-content">
         <header className="topbar">
@@ -144,7 +148,7 @@ export default function DashboardApp({ children }: { children: ReactNode }) {
           </button>
           <div className="greeting">
             {route === "home" ? (
-              <h1>Hello, {dashboard.user.firstName}</h1>
+              <h1>Hello, {user.name || dashboard.user.firstName}</h1>
             ) : (
               <strong>{currentPage.label}</strong>
             )}

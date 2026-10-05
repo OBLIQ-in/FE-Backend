@@ -34,12 +34,14 @@ export function Sidebar({
   mobileOpen,
   closeMobile,
   toggleCollapse,
+  firmName,
 }: {
   route: string;
   navigate: Navigate;
   mobileOpen: boolean;
   closeMobile: () => void;
   toggleCollapse: () => void;
+  firmName?: string;
 }) {
   return (
     <>
@@ -106,9 +108,11 @@ export function Sidebar({
           ))}
         </nav>
         <div className="workspace-foot">
-          <span className="workspace-avatar">O</span>
+          <span className="workspace-avatar">
+            {(firmName || "OBLIQ")[0]?.toUpperCase() || "O"}
+          </span>
           <span>
-            <strong>OBLIQ workspace</strong>
+            <strong>{firmName || "OBLIQ workspace"}</strong>
             <small>Local preview data</small>
           </span>
         </div>
