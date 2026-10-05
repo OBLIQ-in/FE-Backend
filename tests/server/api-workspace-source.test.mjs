@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { createApiWorkspace } from "../src/lib/api-workspace-source.ts";
+import { createApiWorkspace } from "../../src/lib/api-workspace-source.ts";
 
 const workspace = {
   projects: [],

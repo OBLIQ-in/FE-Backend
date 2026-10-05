@@ -1,11 +1,11 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { recordInput, timeInput } from "../src/server/workspace/input.ts";
+import { recordInput, timeInput } from "../../src/server/workspace/input.ts";
 import {
   relativeTime,
   toActivityItem,
   toISODate,
-} from "../src/server/workspace/mappers.ts";
+} from "../../src/server/workspace/mappers.ts";
 
 test("keeps only the fields each record kind uses", () => {
   const parsed = recordInput.parse({

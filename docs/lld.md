@@ -48,10 +48,13 @@ src/
     workspace/service.ts    Firm-scoped queries and writes
 drizzle/                    Generated SQL migrations; commit with schema changes
 tests/
-  api-workspace-source.test.mjs
-  storage-validation.test.mjs
-  workspace-input.test.mjs
-  workspace-source.test.mjs
+  client/                   Browser-side state; run with npm run test:client
+    timer-state.test.mjs
+  server/                   Data, validation, and API; run with npm run test:server
+    api-workspace-source.test.mjs
+    storage-validation.test.mjs
+    workspace-input.test.mjs
+    workspace-source.test.mjs
 ```
 
 The root layout keeps the dashboard mounted across routes. Route pages validate the URL; the dashboard selects the corresponding screen from the pathname. Unknown sections render Next.js's 404 page. This lets the v1 timer continue during navigation without a context provider or state library.
