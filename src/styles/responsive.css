@@ -19,7 +19,12 @@
     font-size: 10px;
   }
   .lower-grid {
-    grid-template-columns: minmax(0, 1fr) 230px;
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .home-side {
+    display: grid;
+    grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+    align-items: start;
   }
 }
 @media (max-width: 900px) {
@@ -65,9 +70,6 @@
   }
   .metrics {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-  .lower-grid {
-    grid-template-columns: minmax(0, 1fr) 230px;
   }
 }
 @media (max-width: 680px) {

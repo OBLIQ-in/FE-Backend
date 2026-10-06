@@ -6,21 +6,29 @@ import {
   Clock3,
   FilePenLine,
   FileText,
+  FolderPlus,
+  Landmark,
   ReceiptText,
   Send,
 } from "lucide-react";
 import { dashboard } from "@/data/dashboard";
-import type { ActivityItem, ModalKind } from "@/types/workspace";
+import { initials } from "@/lib/format";
+import type { Route } from "@/lib/routes";
+import type { ActivityItem, ModalKind, TeamMember } from "@/types/workspace";
 
+// A quick action either opens a form or goes to a page.
 export const quickActions: {
   label: string;
-  kind: ModalKind;
   icon: typeof ReceiptText;
+  modal?: ModalKind;
+  route?: Route;
 }[] = [
-  { label: "Send an invoice", kind: "invoice", icon: ReceiptText },
-  { label: "Draft a proposal", kind: "proposal", icon: Send },
-  { label: "Create a contract", kind: "contract", icon: ClipboardList },
-  { label: "Add a form", kind: "form", icon: FileText },
+  { label: "Send an invoice", modal: "invoice", icon: ReceiptText },
+  { label: "Draft a proposal", modal: "proposal", icon: Send },
+  { label: "Create a contract", modal: "contract", icon: ClipboardList },
+  { label: "Add a form", modal: "form", icon: FileText },
+  { label: "Create a project", modal: "project", icon: FolderPlus },
+  { label: "File Tax", route: "taxes", icon: Landmark },
 ];
 
 const metricIcons = {
@@ -69,5 +77,29 @@ export function ActivityList({ activity }: { activity: ActivityItem[] }) {
         </div>
       ))}
     </div>
+  );
+}
+
+export function Avatar({ name }: { name: string }) {
+  return (
+    <span className="avatar" title={name}>
+      {/^[A-Z]{1,3}$/.test(name) ? name : initials(name)}
+    </span>
+  );
+}
+
+export function TeamList({ members }: { members: TeamMember[] }) {
+  return (
+    <ul className="team-list">
+      {members.map((member) => (
+        <li key={member.id}>
+          <Avatar name={member.name} />
+          <span>
+            <strong>{member.name}</strong>
+            <small>{member.role}</small>
+          </span>
+        </li>
+      ))}
+    </ul>
   );
 }

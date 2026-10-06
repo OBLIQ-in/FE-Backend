@@ -314,3 +314,6 @@
   font-size: 10px;
   font-weight: 600;
 }
+.detail-grid.detail-grid-single {
+  grid-template-columns: minmax(0, 1fr);
+}

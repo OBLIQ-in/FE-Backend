@@ -7,7 +7,12 @@ import type {
   TimeEntry,
 } from "@/types/workspace";
 
-type FieldType = "string" | "number" | "optional-string";
+type FieldType =
+  | "string"
+  | "number"
+  | "optional-string"
+  | "optional-priority"
+  | "optional-string-list";
 type RecordShape<T> = { [Key in keyof T]-?: FieldType };
 
 // localStorage is user-controlled. Check every field before rendering a record.
@@ -22,6 +27,16 @@ function records<T>(shape: RecordShape<T>) {
           const field = item[key];
           if (type === "optional-string")
             return field === undefined || typeof field === "string";
+          if (type === "optional-priority")
+            return (
+              field === undefined || ["High", "Medium", "Low"].includes(field)
+            );
+          if (type === "optional-string-list")
+            return (
+              field === undefined ||
+              (Array.isArray(field) &&
+                field.every((entry) => typeof entry === "string"))
+            );
           return (
             typeof field === type &&
             (type !== "number" || Number.isFinite(field))
@@ -39,6 +54,8 @@ export const validProjects = records<Project>({
   due: "string",
   lead: "string",
   category: "string",
+  priority: "optional-priority",
+  team: "optional-string-list",
 });
 export const validClients = records<Client>({
   id: "string",

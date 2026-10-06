@@ -29,6 +29,8 @@ import { ClientsPage } from "@/components/dashboard/pages/clients";
 import { DocumentsPage } from "@/components/dashboard/pages/documents";
 import { InvoicesPage } from "@/components/dashboard/pages/invoices";
 import { ProjectsPage } from "@/components/dashboard/pages/projects";
+import { SettingsPage } from "@/components/dashboard/pages/settings";
+import { TaxesPage } from "@/components/dashboard/pages/taxes";
 import { TimePage } from "@/components/dashboard/pages/time";
 import { ProjectDrawer } from "@/components/dashboard/project-drawer";
 import { WorkspaceModal } from "@/components/dashboard/workspace-modal";
@@ -129,6 +131,7 @@ export default function DashboardApp({ children }: { children: ReactNode }) {
         mobileOpen={mobileOpen}
         closeMobile={() => setMobileOpen(false)}
         toggleCollapse={() => setCollapsed((value) => !value)}
+        userName={dashboard.user.firstName}
       />
       <main id="main-content" className="main-content">
         <header className="topbar">
@@ -310,6 +313,8 @@ export default function DashboardApp({ children }: { children: ReactNode }) {
             setPeriod={setPeriod}
           />
         )}
+        {ready && route === "taxes" && <TaxesPage navigate={navigate} />}
+        {ready && route === "settings" && <SettingsPage />}
         {children}
       </main>
       {modal && (

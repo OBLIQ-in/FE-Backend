@@ -203,36 +203,6 @@
   position: relative;
   text-decoration: none;
 }
-.workspace-foot {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 15px 8px 3px;
-  border-top: 1px solid #ededed;
-}
-.workspace-avatar {
-  display: grid;
-  place-items: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 9px;
-  background: #252525;
-  color: white;
-  font-size: 13px;
-  font-weight: 700;
-}
-.workspace-foot strong,
-.workspace-foot small {
-  display: block;
-}
-.workspace-foot strong {
-  font-size: 10px;
-}
-.workspace-foot small {
-  color: #888;
-  font-size: 9px;
-  margin-top: 3px;
-}
 .sidebar-collapsed .sidebar {
   visibility: hidden;
   flex-basis: 0;
@@ -314,4 +284,31 @@
   font-size: 8px;
   text-transform: uppercase;
   letter-spacing: 0.04em;
+}
+.admin-area {
+  display: grid;
+  gap: 6px;
+  padding-top: 14px;
+  border-top: 1px solid #ededed;
+}
+.admin-area .nav-caption {
+  margin-bottom: 4px;
+}
+.user-avatar {
+  width: 22px;
+  height: 22px;
+  flex: 0 0 22px;
+  border-radius: 50%;
+  background: #e8e4df;
+  display: grid;
+  place-items: center;
+  font-size: 9px;
+  font-weight: 600;
+}
+.sign-out:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.sign-out:disabled:hover {
+  background: transparent;
 }
