@@ -1,4 +1,6 @@
+import { sql } from "drizzle-orm";
 import {
+  check,
   date,
   index,
   integer,
@@ -14,7 +16,11 @@ import {
 // Enum values match the strings the screens filter on, so rows map to the
 // frontend types without translation.
 export const userType = pgEnum("user_type", ["client", "firm"]);
-export const memberRole = pgEnum("member_role", ["owner", "article_assistant"]);
+export const memberRole = pgEnum("member_role", [
+  "owner",
+  "article_assistant",
+  "reviewer",
+]);
 export const clientStatus = pgEnum("client_status", ["Active", "Inactive"]);
 export const projectStatus = pgEnum("project_status", [
   "Planning",
@@ -90,18 +96,29 @@ export const firmMembers = pgTable(
 );
 
 // Codes an owner gives article assistants to join the firm (#12).
-export const firmInvites = pgTable("firm_invites", {
-  id: id(),
-  firmId: firmId(),
-  code: text("code").notNull().unique(),
-  role: memberRole("role").notNull().default("article_assistant"),
-  createdBy: uuid("created_by")
-    .notNull()
-    .references(() => users.id),
-  expiresAt: timestamp("expires_at", { withTimezone: true }),
-  revokedAt: timestamp("revoked_at", { withTimezone: true }),
-  createdAt: createdAt(),
-});
+export const firmInvites = pgTable(
+  "firm_invites",
+  {
+    id: id(),
+    firmId: firmId(),
+    code: text("code").notNull().unique(),
+    role: memberRole("role").notNull().default("article_assistant"),
+    createdBy: uuid("created_by")
+      .notNull()
+      .references(() => users.id),
+    expiresAt: timestamp("expires_at", { withTimezone: true }),
+    revokedAt: timestamp("revoked_at", { withTimezone: true }),
+    acceptedAt: timestamp("accepted_at", { withTimezone: true }),
+    acceptedBy: uuid("accepted_by").references(() => users.id),
+    createdAt: createdAt(),
+  },
+  (table) => [
+    check(
+      "firm_invites_acceptance_pair",
+      sql`(${table.acceptedAt} IS NULL) = (${table.acceptedBy} IS NULL)`,
+    ),
+  ],
+);
 
 export const clients = pgTable(
   "clients",

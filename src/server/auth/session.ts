@@ -7,7 +7,7 @@ export type Session = {
   userId: string;
   name: string;
   firmId: string;
-  role: "owner" | "article_assistant";
+  role: "owner" | "article_assistant" | "reviewer";
 };
 
 // Until Auth0 lands (#10), development can act as the seeded user by setting
