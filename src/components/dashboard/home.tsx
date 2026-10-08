@@ -65,11 +65,15 @@ export function HomePage({
         </div>
         <div className="home-side">
           <section className="quick-actions" aria-label="Quick actions">
-            {quickActions.map(({ label, modal, route, icon: Icon }) => (
+            {quickActions.map(({ label, action, icon: Icon }) => (
               <button
                 className="action-card"
                 key={label}
-                onClick={() => (modal ? openModal(modal) : navigate(route!))}
+                onClick={() =>
+                  action.type === "modal"
+                    ? openModal(action.modal)
+                    : navigate(action.route)
+                }
               >
                 <span className="round-icon action-icon">
                   <Icon size={17} strokeWidth={1.7} />

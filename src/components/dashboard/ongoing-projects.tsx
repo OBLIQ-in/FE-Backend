@@ -53,15 +53,13 @@ export function OngoingProjects({
                       return (
                         <tr
                           key={item.id}
-                          className={`row-${group.tone}`}
+                          className={`row-clickable row-${group.tone}`}
                           onClick={() => onSelect(item)}
-                          tabIndex={0}
-                          onKeyDown={(event) => {
-                            if (event.key === "Enter") onSelect(item);
-                          }}
                         >
                           <td>
-                            <strong>{item.name}</strong>
+                            <button type="button" className="row-link">
+                              <strong>{item.name}</strong>
+                            </button>
                           </td>
                           <td>{item.client}</td>
                           <td>

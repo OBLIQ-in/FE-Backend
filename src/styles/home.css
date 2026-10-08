@@ -313,7 +313,7 @@
 .ongoing-table tr.row-review td:first-child {
   box-shadow: inset 3px 0 0 #e2a63b;
 }
-/* Colours follow the dashboard design; change here if the meaning should flip. */
+/* Conventional colours: High is red, Medium amber, Low green. */
 .priority {
   display: inline-block;
   padding: 4px 10px;
@@ -323,9 +323,9 @@
   font-weight: 600;
 }
 .priority-high {
-  color: #1f8a3a;
-  background: #eaf6ee;
-  border-color: #bfe3c9;
+  color: #c34b66;
+  background: #fceef1;
+  border-color: #f1c6d0;
 }
 .priority-medium {
   color: #a96d12;
@@ -333,9 +333,9 @@
   border-color: #f1dba4;
 }
 .priority-low {
-  color: #c34b66;
-  background: #fceef1;
-  border-color: #f1c6d0;
+  color: #1f8a3a;
+  background: #eaf6ee;
+  border-color: #bfe3c9;
 }
 .avatar {
   width: 24px;

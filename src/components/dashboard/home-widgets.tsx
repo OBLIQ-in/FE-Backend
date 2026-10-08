@@ -16,19 +16,44 @@ import { initials } from "@/lib/format";
 import type { Route } from "@/lib/routes";
 import type { ActivityItem, ModalKind, TeamMember } from "@/types/workspace";
 
-// A quick action either opens a form or goes to a page.
-export const quickActions: {
+// A quick action either opens a form or goes to a page, never neither.
+export type QuickAction = {
   label: string;
   icon: typeof ReceiptText;
-  modal?: ModalKind;
-  route?: Route;
-}[] = [
-  { label: "Send an invoice", modal: "invoice", icon: ReceiptText },
-  { label: "Draft a proposal", modal: "proposal", icon: Send },
-  { label: "Create a contract", modal: "contract", icon: ClipboardList },
-  { label: "Add a form", modal: "form", icon: FileText },
-  { label: "Create a project", modal: "project", icon: FolderPlus },
-  { label: "File Tax", route: "taxes", icon: Landmark },
+  action: { type: "modal"; modal: ModalKind } | { type: "route"; route: Route };
+};
+
+export const quickActions: QuickAction[] = [
+  {
+    label: "Send an invoice",
+    icon: ReceiptText,
+    action: { type: "modal", modal: "invoice" },
+  },
+  {
+    label: "Draft a proposal",
+    icon: Send,
+    action: { type: "modal", modal: "proposal" },
+  },
+  {
+    label: "Create a contract",
+    icon: ClipboardList,
+    action: { type: "modal", modal: "contract" },
+  },
+  {
+    label: "Add a form",
+    icon: FileText,
+    action: { type: "modal", modal: "form" },
+  },
+  {
+    label: "Create a project",
+    icon: FolderPlus,
+    action: { type: "modal", modal: "project" },
+  },
+  {
+    label: "File Tax",
+    icon: Landmark,
+    action: { type: "route", route: "taxes" },
+  },
 ];
 
 const metricIcons = {
