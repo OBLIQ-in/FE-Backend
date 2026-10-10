@@ -5,16 +5,21 @@ import {
   CircleDollarSign,
   ClipboardList,
   Clock3,
+  Headset,
   Home,
+  Landmark,
   LineChart,
+  LogOut,
   ReceiptText,
   UsersRound,
 } from "lucide-react";
 
 import Link from "next/link";
 import { pages, routeHref } from "@/lib/routes";
+import type { Route } from "@/lib/routes";
+import { initials } from "@/lib/format";
 import type { Navigate } from "./contracts";
-const icons = {
+const icons: Record<Route, typeof Home> = {
   home: Home,
   clients: UsersRound,
   projects: BriefcaseBusiness,
@@ -23,9 +28,13 @@ const icons = {
   contracts: ClipboardList,
   balance: CircleDollarSign,
   accounting: LineChart,
+  taxes: Landmark,
+  settings: Home,
 };
-const navigation = [pages.slice(0, 4), pages.slice(4)].map((group) =>
-  group.map((page) => ({ ...page, icon: icons[page.slug] })),
+const navigation = (["features", "tools"] as const).map((group) =>
+  pages
+    .filter((page) => page.group === group)
+    .map((page) => ({ ...page, icon: icons[page.slug] })),
 );
 
 export function Sidebar({
@@ -34,12 +43,14 @@ export function Sidebar({
   mobileOpen,
   closeMobile,
   toggleCollapse,
+  userName,
 }: {
   route: string;
   navigate: Navigate;
   mobileOpen: boolean;
   closeMobile: () => void;
   toggleCollapse: () => void;
+  userName: string;
 }) {
   return (
     <>
@@ -105,12 +116,44 @@ export function Sidebar({
             </div>
           ))}
         </nav>
-        <div className="workspace-foot">
-          <span className="workspace-avatar">O</span>
-          <span>
-            <strong>OBLIQ workspace</strong>
-            <small>Local preview data</small>
-          </span>
+        <div className="admin-area">
+          <div className="nav-caption">ADMINISTRATION</div>
+          <a className="nav-link" href="mailto:support@obliq.in">
+            <Headset size={18} strokeWidth={1.7} />
+            <span>Support</span>
+          </a>
+          <Link
+            href={routeHref("settings")}
+            className={`nav-link user-link ${route === "settings" ? "active" : ""}`}
+            aria-current={route === "settings" ? "page" : undefined}
+            aria-label={`${userName}, profile and settings`}
+            onClick={(event) => {
+              if (
+                event.metaKey ||
+                event.ctrlKey ||
+                event.shiftKey ||
+                event.altKey
+              )
+                return;
+              event.preventDefault();
+              navigate("settings");
+              closeMobile();
+            }}
+          >
+            <span className="user-avatar" aria-hidden="true">
+              {initials(userName)}
+            </span>
+            <span>{userName}</span>
+          </Link>
+          <button
+            type="button"
+            className="nav-link sign-out"
+            disabled
+            title="Sign out will work once login is added"
+          >
+            <LogOut size={18} strokeWidth={1.7} />
+            <span>Sign out</span>
+          </button>
         </div>
       </aside>
     </>

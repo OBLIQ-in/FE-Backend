@@ -7,6 +7,8 @@ export type Metric = {
   icon: "briefcase" | "edit" | "calendar" | "clock";
 };
 
+export type Priority = "High" | "Medium" | "Low";
+
 export type Project = {
   id: string;
   name: string;
@@ -16,6 +18,15 @@ export type Project = {
   due: string;
   lead: string;
   category: string;
+  // Preview records created before these existed show Medium and the lead.
+  priority?: Priority;
+  team?: string[];
+};
+
+export type TeamMember = {
+  id: string;
+  name: string;
+  role: string;
 };
 
 export type Client = {

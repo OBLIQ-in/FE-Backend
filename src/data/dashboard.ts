@@ -5,10 +5,12 @@ import type {
   Invoice,
   Metric,
   Project,
+  TeamMember,
 } from "@/types/workspace";
 
 type DashboardData = {
   user: { firstName: string };
+  team: TeamMember[];
   metrics: Metric[];
   earnings: { label: string; billable: number; nonBillable: number }[];
   yearlyEarnings: { label: string; billable: number; nonBillable: number }[];
@@ -22,6 +24,12 @@ type DashboardData = {
 // Static fixtures for the local preview.
 export const dashboard = {
   user: { firstName: "Naman" },
+  // Stands in for the firm's members until roles and invites exist.
+  team: [
+    { id: "TM-01", name: "Naman Kumar", role: "Owner" },
+    { id: "TM-02", name: "Riyashika Das", role: "Reviewer / Senior" },
+    { id: "TM-03", name: "Sukrut Pawar", role: "Article / Preparer" },
+  ],
   metrics: [
     {
       id: "total",
@@ -88,6 +96,8 @@ export const dashboard = {
       due: "2026-10-08",
       lead: "NK",
       category: "Audit",
+      priority: "High",
+      team: ["NK", "RD"],
     },
     {
       id: "PRJ-1038",
@@ -98,6 +108,8 @@ export const dashboard = {
       due: "2026-10-11",
       lead: "RD",
       category: "Compliance",
+      priority: "Medium",
+      team: ["RD", "SP"],
     },
     {
       id: "PRJ-1035",
@@ -108,6 +120,8 @@ export const dashboard = {
       due: "2026-10-15",
       lead: "AS",
       category: "Tax",
+      priority: "Low",
+      team: ["AS", "NK"],
     },
     {
       id: "PRJ-1027",
@@ -118,6 +132,8 @@ export const dashboard = {
       due: "2026-10-18",
       lead: "SP",
       category: "Accounting",
+      priority: "Medium",
+      team: ["SP"],
     },
     {
       id: "PRJ-1019",
@@ -128,6 +144,8 @@ export const dashboard = {
       due: "2026-09-28",
       lead: "NK",
       category: "Audit",
+      priority: "Low",
+      team: ["NK", "AS"],
     },
   ],
   clients: [

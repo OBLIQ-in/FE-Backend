@@ -45,3 +45,12 @@ export function formatTime(seconds: number) {
     .map((value) => String(value).padStart(2, "0"))
     .join(":");
 }
+
+export function initials(name: string) {
+  return name
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0].toUpperCase())
+    .join("");
+}

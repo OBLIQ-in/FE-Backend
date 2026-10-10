@@ -29,14 +29,13 @@ export function ProjectTable({
             projects.map((item) => (
               <tr
                 key={item.id}
+                className="row-clickable"
                 onClick={() => onSelect(item)}
-                tabIndex={0}
-                onKeyDown={(event) => {
-                  if (event.key === "Enter") onSelect(item);
-                }}
               >
                 <td>
-                  <strong>{item.name}</strong>
+                  <button type="button" className="row-link">
+                    <strong>{item.name}</strong>
+                  </button>
                   <small>
                     {item.id} · {item.category}
                   </small>
